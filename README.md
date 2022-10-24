@@ -28,6 +28,42 @@ mvn spring-boot:run
    `` docker image ls``
 3) Run the image ``docker run -p 8080:8080 tenpo-auth-service:1.0.0-beta``
 
+# How to use?
+1) Register an user
+```
+curl --location --request POST 'http://{{uri}}/api/v1/auth/signup' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "email": "tenpo@tenpo.cl",
+  "username": "user",
+  "password": "user1234",
+  "roleList": [
+    "ROLE_USER"
+  ]
+}
+```
+2) Obtain JWT token
+```
+curl --location --request POST 'http://{{uri}}/api/v1/auth/signin' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"username": "admin",
+"password": "nachonach"
+}
+```
+### Response interface
+```
+{
+  "sub": "admin",
+  "authorities": [
+    "ROLE_USER"
+  ],
+  "iat": 1666652493,
+  "exp": 1666656093
+} 
+```
+
+3) Validate each request of another microservice with this one, and could save it as an springboot user principal !
 
 # Contributing
 Bug reports and pull requests are welcome :)

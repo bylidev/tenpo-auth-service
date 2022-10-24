@@ -8,10 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -28,7 +26,7 @@ public class JwtUtils {
 
         return Jwts.builder()
             .setSubject((userPrincipal.getUsername()))
-            .addClaims(Map.of("authorities",userPrincipal.getAuthorities().stream().map(a->a.getAuthority())))
+            .addClaims(Map.ofEntries(Map.entry("authorities",userPrincipal.getAuthorities().stream().map(a->a.getAuthority()).collect(Collectors.toList()))))
             .setIssuedAt(new Date())
             .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)

@@ -6,6 +6,7 @@ import cl.tenpo.evaluation.authservice.dto.SignupRequest;
 import cl.tenpo.evaluation.authservice.model.Role;
 import cl.tenpo.evaluation.authservice.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,5 +172,20 @@ class AuthServiceIntegrationTests {
                         .build())))
             .andExpect(MockMvcResultMatchers.status().is(200));
     }
-
+    @Test
+    void signup_should_validate_body_400() throws Exception{
+        Assertions.assertTrue(
+        this.mvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/auth/signup")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(this.objectMapper.writeValueAsString(SignupRequest.builder()
+                        .email("")
+                        .username("")
+                        .password("")
+                        .roleList(Arrays.asList())
+                        .build())))
+            .andExpect(MockMvcResultMatchers.status().is(400)).andReturn().getResponse().getContentAsString().contains(
+                "cause"
+            ));
+    }
 }

@@ -6,6 +6,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -82,14 +84,17 @@ public class ControllerAdvice {
         return errors;
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> methodArgumentNotValidException(
+    public Map<String, String> handleValidationExceptions(
         MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        errors.put(ERROR_RESPONSE_CAUSE, ex.getMessage());
+        errors.put(ERROR_RESPONSE_CAUSE,ex.getBindingResult().getAllErrors().stream()
+                .map(fe->String.format("%s: %s",((FieldError) fe).getField(),fe.getDefaultMessage())).collect(Collectors.joining(",")));
+
         return errors;
     }
+
 
 
 }

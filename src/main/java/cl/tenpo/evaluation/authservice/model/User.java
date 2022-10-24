@@ -33,7 +33,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(targetClass = Role.class,fetch = FetchType.EAGER)
     private List<Role> roles;
 
 }
