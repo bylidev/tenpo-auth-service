@@ -8,6 +8,7 @@ import cl.tenpo.evaluation.authservice.dto.SignupRequest;
 import cl.tenpo.evaluation.authservice.model.Role;
 import cl.tenpo.evaluation.authservice.model.User;
 import cl.tenpo.evaluation.authservice.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,9 +56,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void signup(SignupRequest signUpRequest) {
 
-    /*    Assertions.assertFalse(userRepository.existsByUsername(signUpRequest.getUsername()), "Username already taken.");
+        Assertions.assertFalse(userRepository.existsByUsername(signUpRequest.getUsername()), "Username already taken.");
         Assertions.assertFalse(userRepository.existsByEmail(signUpRequest.getEmail()), "Email already in use.");
-*/
+
         userRepository.save(User.builder()
             .username(signUpRequest.getUsername())
             .email(signUpRequest.getEmail())

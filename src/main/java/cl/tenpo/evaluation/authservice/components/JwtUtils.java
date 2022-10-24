@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public class JwtUtils {
 
         return Jwts.builder()
             .setSubject((userPrincipal.getUsername()))
+            .addClaims(Map.of("authorities",userPrincipal.getAuthorities().stream().map(a->a.getAuthority())))
             .setIssuedAt(new Date())
             .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
