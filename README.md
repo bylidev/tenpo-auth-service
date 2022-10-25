@@ -6,6 +6,7 @@ For further reference, please consider the following sections:
 
 * [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
 * [Spring Security](https://spring.io/projects/spring-security)
+* [Swagger](http://localhost:8080/swagger-ui/index.html#/auth-controller/validateToken)
 
 # Requirements
 For building and running the application you need:
@@ -51,7 +52,7 @@ curl --location --request POST 'http://{{uri}}/api/v1/auth/signin' \
 "password": "nachonach"
 }
 ```
-### Response interface
+### JWT payload interface
 ```
 {
   "sub": "admin",
