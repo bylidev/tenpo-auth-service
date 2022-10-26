@@ -116,7 +116,7 @@ class AuthServiceIntegrationTests {
 
         //assert
         this.mvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/token")
+                MockMvcRequestBuilders.post("/api/v1/auth/validate")
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization",this.objectMapper.readValue(jsonResponse, JwtResponse.class).getToken()))
             .andExpect(MockMvcResultMatchers.status().is(200));
@@ -126,7 +126,7 @@ class AuthServiceIntegrationTests {
     @Test
     void validate_token_should_return_401() throws Exception {
         this.mvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/token")
+                MockMvcRequestBuilders.post("/api/v1/auth/validate")
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization",""))
             .andExpect(MockMvcResultMatchers.status().is(401));
@@ -136,7 +136,7 @@ class AuthServiceIntegrationTests {
     @Test
     void null_token_should_return_401() throws Exception {
         this.mvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/token")
+                MockMvcRequestBuilders.post("/api/v1/auth/validate")
                     .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().is(401));
     }
@@ -144,7 +144,7 @@ class AuthServiceIntegrationTests {
     @Test
     void expired_jwt_signature_should_return_401() throws Exception {
         this.mvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/token")
+                MockMvcRequestBuilders.post("/api/v1/auth/validate")
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY2NjYyMzk1MywiZXhwIjoxNjY2NjI0MDEzfQ.35XquKz7ZQDATRakX-YnXzNtFWx2CDCNmRRpdi-IIRYpY6F9MNz95ZxVfcq29BakSD4bBpHtHNCxa-rjlGH2Xw"))
             .andExpect(MockMvcResultMatchers.status().is(401));
@@ -153,7 +153,7 @@ class AuthServiceIntegrationTests {
     @Test
     void invalid_jwt_signature_should_return_401() throws Exception {
         this.mvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/auth/token")
+                MockMvcRequestBuilders.post("/api/v1/auth/validate")
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2NjY2NDExOTcsImV4cCI6MTY5ODE3NzE5NywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.P-qVqcdPsLQL0yv-MagU-wlv7ekACiIHPV36kf-ZBOE"))
             .andExpect(MockMvcResultMatchers.status().is(401));

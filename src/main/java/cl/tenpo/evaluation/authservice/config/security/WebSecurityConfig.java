@@ -64,7 +64,9 @@ public class WebSecurityConfig {
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+            .authorizeRequests().antMatchers("/api/v1/auth/signup").permitAll()
+            .and()
+            .authorizeRequests().antMatchers("/api/v1/auth/signin").permitAll()
             .and()
             .authorizeRequests().antMatchers("/swagger-ui/**").permitAll()
             .and()
